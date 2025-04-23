@@ -1,0 +1,2 @@
+../Core/Src/VirtualTemperatureSensor.cpp:4:1:VirtualTemperatureSensor::VirtualTemperatureSensor()	16	static
+../Core/Src/VirtualTemperatureSensor.cpp:8:7:float VirtualTemperatureSensor::getTemperature()	16	static

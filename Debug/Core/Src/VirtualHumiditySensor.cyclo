@@ -1,0 +1,1 @@
+../Core/Src/VirtualHumiditySensor.cpp:3:7:float VirtualHumiditySensor::getHumidity() const	1

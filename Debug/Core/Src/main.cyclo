@@ -1,7 +1,7 @@
-../Core/Src/main.cpp:89:5:int main()	2
-../Core/Src/main.cpp:180:6:void SystemClock_Config()	3
-../Core/Src/main.cpp:219:13:void MX_USART2_UART_Init()	2
-../Core/Src/main.cpp:252:13:void MX_GPIO_Init()	1
-../Core/Src/main.cpp:289:6:void MX_RTC_Init()	3
-../Core/Src/main.cpp:335:6:void StartDefaultTask(void*)	1
-../Core/Src/main.cpp:350:6:void Error_Handler()	1
+../Core/Src/main.cpp:87:5:int main()	2
+../Core/Src/main.cpp:184:6:void SystemClock_Config()	3
+../Core/Src/main.cpp:222:13:void MX_USART2_UART_Init()	2
+../Core/Src/main.cpp:255:13:void MX_GPIO_Init()	1
+../Core/Src/main.cpp:300:6:void MX_RTC_Init()	3
+../Core/Src/main.cpp:348:6:void Timer2_Init()	1
+../Core/Src/main.cpp:367:6:void Error_Handler()	1

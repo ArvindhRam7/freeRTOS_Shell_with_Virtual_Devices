@@ -27,10 +27,12 @@
 #include "VirtualDeviceTask.h"
 #include "stream_buffer.h"
 #include "UartRxStream.h"
-
+#include "dht11.h"
+#include "dwt_delay.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stm32f1xx_hal_rtc.h"
+#include "stm32f1xx_hal_tim.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,13 +55,8 @@
 UART_HandleTypeDef huart2;
 // Define the RTC handle
 RTC_HandleTypeDef hrtc;
-/* Definitions for defaultTask */
-osThreadId_t defaultTaskHandle;
-const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
+
+
 /* USER CODE BEGIN PV */
 uint8_t uartRxByte;
 /* USER CODE END PV */
@@ -70,7 +67,8 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 void StartDefaultTask(void *argument);
 void MX_RTC_Init(void);
-
+void DHT11_Task(void *argument);
+void Timer2_Init(void);
 /* USER CODE BEGIN PFP */
 #define B1_Pin GPIO_PIN_13  // Replace with the correct pin
 #define B1_GPIO_Port GPIOC  // Replace with the correct GPIO port (e.g., GPIOA, GPIOB, etc.)
@@ -90,7 +88,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+	//osThreadId_t dht11TaskHandle;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -106,7 +104,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  void Timer2_Init();
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -138,6 +136,13 @@ int main(void)
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
+
+
+//  const osThreadAttr_t dht11Task_attributes = {
+//    .name = "DHT11Task",
+//    .stack_size = 512 * 4,
+//    .priority = (osPriority_t) osPriorityNormal,
+//  };
   /* creation of defaultTask */
 
 
@@ -149,8 +154,7 @@ int main(void)
   };
   /* add threads, ... */
   osThreadNew(StartShellTask, NULL, &shellTask_attributes);
-  //osThreadNew(StartShellTask, nullptr, nullptr);
- // osThreadNew(StartVirtualDeviceTask, nullptr, nullptr);
+  //dht11TaskHandle = osThreadNew(DHT11_Task, nullptr, &dht11Task_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -210,7 +214,6 @@ void SystemClock_Config(void)
     Error_Handler();
   }
 }
-
 /**
   * @brief USART2 Initialization Function
   * @param None
@@ -282,6 +285,14 @@ static void MX_GPIO_Init(void)
   HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
+  // Set PA1 as Output Push-Pull or Open-Drain
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_SET);
+  // Configure GPIO PA1 as input with pull-up resistor
+  GPIO_InitStruct.Pin = GPIO_PIN_1;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;  // Enable pull-up
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;  // Low speed is fine for DHT11
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
@@ -332,15 +343,21 @@ void MX_RTC_Init() {
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
-{
-  /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END 5 */
+
+// Initialize Timer 2 for microsecond delay
+void Timer2_Init(void) {
+    __HAL_RCC_TIM2_CLK_ENABLE();  // Enable clock for Timer 2
+
+    TIM_HandleTypeDef htim2;
+    htim2.Instance = TIM2;
+    htim2.Init.Prescaler = 72 - 1;  // Set the prescaler for 1 MHz timer (72 MHz / 72 = 1 MHz)
+    htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+    htim2.Init.Period = 0xFFFF;  // Max period (16-bit)
+    htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+
+    HAL_TIM_Base_Init(&htim2);  // Initialize the timer
+    HAL_TIM_Base_Start(&htim2);  // Start the timer
 }
 
 /**

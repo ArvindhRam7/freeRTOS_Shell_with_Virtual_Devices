@@ -39,7 +39,10 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_gpio.h \
  ../Core/Inc/ShellTask.h ../Core/Inc/VirtualDeviceTask.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/stream_buffer.h \
- ../Core/Inc/UartRxStream.h
+ ../Core/Inc/UartRxStream.h ../Core/Inc/dht11.h ../Core/Inc/main.h \
+ ../Core/Inc/dwt_delay.h \
+ ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
+ ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 ../Core/Inc/stm32f1xx_hal_conf.h:
@@ -83,3 +86,8 @@ Core/Src/main.o: ../Core/Src/main.cpp ../Core/Inc/main.h \
 ../Core/Inc/VirtualDeviceTask.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/stream_buffer.h:
 ../Core/Inc/UartRxStream.h:
+../Core/Inc/dht11.h:
+../Core/Inc/main.h:
+../Core/Inc/dwt_delay.h:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h:
+../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h:

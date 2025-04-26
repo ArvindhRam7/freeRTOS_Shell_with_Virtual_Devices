@@ -61,7 +61,7 @@ void StartShellTask(void *argument) {
 
 				if (strcmp(command, "GET_TEMPERATURE") == 0) {
 					float temp = tempSensor.getTemperature();
-					snprintf(response, sizeof(response), "Temperature: %.2f°C\n", temp);
+					snprintf(response, sizeof(response), "Temperature: %.2foC\n", temp);
 				} else if (strcmp(command, "GET_HUMIDITY") == 0) {
 					float hum = humiditySensor.getHumidity();
 					snprintf(response, sizeof(response), "Humidity: %.2f%%\n", hum);

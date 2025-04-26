@@ -4,6 +4,8 @@
 "./Core/Src/VirtualHumiditySensor.o"
 "./Core/Src/VirtualTemperatureSensor.o"
 "./Core/Src/VirtualVoltageSensor.o"
+"./Core/Src/dht11.o"
+"./Core/Src/dwt_delay.o"
 "./Core/Src/freertos.o"
 "./Core/Src/main.o"
 "./Core/Src/stm32f1xx_hal_msp.o"

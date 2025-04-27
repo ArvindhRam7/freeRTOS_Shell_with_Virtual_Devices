@@ -1,0 +1,2 @@
+../Core/Src/AdcVoltageSensor.cpp:3:1:AdcVoltageSensor::AdcVoltageSensor(ADC_HandleTypeDef*)	16	static
+../Core/Src/AdcVoltageSensor.cpp:5:7:float AdcVoltageSensor::readVoltage()	24	static

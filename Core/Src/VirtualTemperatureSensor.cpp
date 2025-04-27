@@ -6,6 +6,7 @@ DHT11 dht(GPIOA, GPIO_PIN_1);
 
 VirtualTemperatureSensor::VirtualTemperatureSensor() {
     // Initialization if needed
+	dht.init();
 }
 
 float VirtualTemperatureSensor::getTemperature() {

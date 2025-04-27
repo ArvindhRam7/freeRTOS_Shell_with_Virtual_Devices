@@ -3,7 +3,7 @@
 
 extern DHT11 dht;
 float VirtualHumiditySensor::getHumidity() const {
-    // Simulate some constant or random humidity
+    dht.init();
     float temp, hum;
     if (dht.read(temp, hum)) {
         return hum;

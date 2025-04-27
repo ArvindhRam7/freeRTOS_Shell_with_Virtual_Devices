@@ -1,0 +1,4 @@
+../Core/Src/SolarPanel.cpp:8:1:SolarPanel::SolarPanel(int)	16	static
+../Core/Src/SolarPanel.cpp:11:7:float SolarPanel::calculateSolarIntensity()	16	static
+../Core/Src/SolarPanel.cpp:22:7:float SolarPanel::calculateSolarCurrent()	24	static
+../Core/Src/SolarPanel.cpp:31:7:float SolarPanel::calculateSolarPower()	16	static

@@ -1,7 +1,7 @@
+#include <SolarPanel.h>
 #include "ShellTask.h"
 #include "VirtualTemperatureSensor.h"
 #include "VirtualHumiditySensor.h"
-#include "VirtualVoltageSensor.h"
 #include "stm32f1xx_ll_usart.h"
 #include "cmsis_os2.h"
 #include <cstring>
@@ -25,16 +25,16 @@ void GetCurrentTime(char *response, size_t max_len) {
 
 	// Get current time and date
 	if (HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK) {
-		snprintf(response, max_len, "Error getting time\n");
+		snprintf(response, max_len, "Error getting time\r\n");
 		return;
 	}
 	if (HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK) {
-		snprintf(response, max_len, "Error getting date\n");
+		snprintf(response, max_len, "Error getting date\r\n");
 		return;
 	}
 
 	// Format the time and date as string
-	snprintf(response, max_len, "Time: %02d:%02d:%02d Date: %02d-%02d-%04d\n",
+	snprintf(response, max_len, "Time: %02d:%02d:%02d Date: %02d-%02d-%04d\r\n",
 			sTime.Hours, sTime.Minutes, sTime.Seconds, sDate.Date, sDate.Month,
 			2000 + sDate.Year);
 }
@@ -42,7 +42,7 @@ void GetCurrentTime(char *response, size_t max_len) {
 void StartShellTask(void *argument) {
 	VirtualTemperatureSensor tempSensor;
 	VirtualHumiditySensor humiditySensor;
-	VirtualVoltageSensor voltageSensor;
+	SolarPanel solarPanel(13);
 
 	char rxChar;
 	char command[100];
@@ -61,20 +61,26 @@ void StartShellTask(void *argument) {
 
 				if (strcmp(command, "GET_TEMPERATURE") == 0) {
 					float temp = tempSensor.getTemperature();
-					snprintf(response, sizeof(response), "Temperature: %.2foC\n", temp);
+					snprintf(response, sizeof(response), "Temperature: %.2foC\r\n", temp);
 				} else if (strcmp(command, "GET_HUMIDITY") == 0) {
 					float hum = humiditySensor.getHumidity();
-					snprintf(response, sizeof(response), "Humidity: %.2f%%\n", hum);
-				} else if (strcmp(command, "GET_VOLTAGE") == 0) {
-					float volt = voltageSensor.getVoltage();
-					snprintf(response, sizeof(response), "Voltage: %.2f V\n", volt);
+					snprintf(response, sizeof(response), "Humidity: %.2f%%\r\n", hum);
+				} else if (strcmp(command, "GET_SOLAR_INTENSITY") == 0) {
+					float intensity = solarPanel.calculateSolarIntensity();
+					snprintf(response, sizeof(response), "Solar Panel Intensity: %.2f W/m2\r\n", intensity);
+				} else if (strcmp(command, "GET_SOLAR_CURRENT") == 0) {
+					float current = solarPanel.calculateSolarCurrent();
+					snprintf(response, sizeof(response), "Solar Panel Current: %.2f A\r\n", current);
+				} else if (strcmp(command, "GET_SOLAR_POWER") == 0) {
+					float power = solarPanel.calculateSolarPower();
+					snprintf(response, sizeof(response), "Solar Panel Power: %.2f W\r\n", power);
 				} else if (strcmp(command, "GET_TIME") == 0) {
 					RTC_TimeTypeDef time;
 					RTC_DateTypeDef date;
 					HAL_RTC_GetTime(&hrtc, &time, RTC_FORMAT_BIN);
 					HAL_RTC_GetDate(&hrtc, &date, RTC_FORMAT_BIN);
 					snprintf(response, sizeof(response),
-						"Time: %02d:%02d:%02d, Date: %02d/%02d/%04d\n",
+						"Time: %02d:%02d:%02d, Date: %02d/%02d/%04d\r\n",
 						time.Hours, time.Minutes, time.Seconds,
 						date.Date, date.Month, 2000 + date.Year);
 				} else if (strncmp(command, "SET_TIME", 8) == 0) {
@@ -93,15 +99,15 @@ void StartShellTask(void *argument) {
 
 						if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN) == HAL_OK &&
 							HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) == HAL_OK) {
-							snprintf(response, sizeof(response), "Time set successfully\n");
+							snprintf(response, sizeof(response), "Time set successfully\r\n");
 						} else {
-							snprintf(response, sizeof(response), "Failed to set time\n");
+							snprintf(response, sizeof(response), "Failed to set time\r\n");
 						}
 					} else {
-						snprintf(response, sizeof(response), "Usage: SET_TIME hh mm ss dd mm yyyy\n");
+						snprintf(response, sizeof(response), "Usage: SET_TIME hh mm ss dd mm yyyy\r\n");
 					}
 				} else if (strlen(command) > 0) {
-					snprintf(response, sizeof(response), "Unknown command\n");
+					snprintf(response, sizeof(response), "Unknown command\r\n");
 				} else {
 					response[0] = '\0'; // empty command, don't respond
 				}
@@ -115,4 +121,3 @@ void StartShellTask(void *argument) {
 		}
 	}
 }
-

@@ -1,4 +1,4 @@
 ../Core/Src/VirtualTemperatureSensor.cpp:7:1:VirtualTemperatureSensor::VirtualTemperatureSensor()	1
-../Core/Src/VirtualTemperatureSensor.cpp:11:7:float VirtualTemperatureSensor::getTemperature()	2
-../Core/Src/VirtualTemperatureSensor.cpp:18:1:void __static_initialization_and_destruction_0(int, int)	3
-../Core/Src/VirtualTemperatureSensor.cpp:18:1:cpp)	1
+../Core/Src/VirtualTemperatureSensor.cpp:12:7:float VirtualTemperatureSensor::getTemperature()	2
+../Core/Src/VirtualTemperatureSensor.cpp:19:1:void __static_initialization_and_destruction_0(int, int)	3
+../Core/Src/VirtualTemperatureSensor.cpp:19:1:cpp)	1

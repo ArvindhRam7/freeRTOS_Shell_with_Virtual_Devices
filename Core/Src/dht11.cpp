@@ -72,21 +72,21 @@ bool DHT11::read(float& temperature, float& humidity) {
     return true;
 }
 
-void DHT11_Task(void *argument) {
-    DHT11 sensor(GPIOA, GPIO_PIN_1);
-    sensor.init();
-
-    float temp, hum;
-    char buffer[64];
-
-    for (;;) {
-        if (sensor.read(temp, hum)) {
-            snprintf(buffer, sizeof(buffer), "Temp: %.1f °C, Humidity: %.1f %%\r\n", temp, hum);
-        } else {
-            snprintf(buffer, sizeof(buffer), "DHT11 read failed\r\n");
-        }
-        HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
-
-        osDelay(2000);
-    }
-}
+//void DHT11_Task(void *argument) {
+//    DHT11 sensor(GPIOA, GPIO_PIN_1);
+//    sensor.init();
+//
+//    float temp, hum;
+//    char buffer[64];
+//
+//    for (;;) {
+//        if (sensor.read(temp, hum)) {
+//            snprintf(buffer, sizeof(buffer), "Temp: %.1f °C, Humidity: %.1f %%\r\n", temp, hum);
+//        } else {
+//            snprintf(buffer, sizeof(buffer), "DHT11 read failed\r\n");
+//        }
+//        HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+//
+//        osDelay(2000);
+//    }
+//}
